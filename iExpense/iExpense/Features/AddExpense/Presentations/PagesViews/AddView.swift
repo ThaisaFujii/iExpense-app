@@ -8,15 +8,23 @@
 import SwiftUI
 
 struct AddView: View {
+    //@ObservedObject var addviewVM = AddViewVM()
     @ObservedObject var expenses: Expenses
+    // environment allow us to dismiss the sheet and shows the details of the list
     @Environment(\.dismiss) var dismiss
-    
     @State private var name = ""
     @State private var type = "Personal"
-    @State private var amount = 0.0
+    @State var amount = 0.0
     
     let types = ["Business","Personal"]
     
+    // definir o tipo de moeda inserida pelo usuario
+    var formatter: NumberFormatter = { let formatter = NumberFormatter()
+            formatter.numberStyle = .currency
+            formatter.currencySymbol = "US$"
+            return formatter
+        }()
+
     var body: some View {
         NavigationView {
             Form {
@@ -27,8 +35,10 @@ struct AddView: View {
                         Text($0)
                     }
                 }
-                TextField("Amount", value: $amount, format: .currency(code: "USD"))
+                TextField("Amount", value: $amount, formatter: formatter)
                     .keyboardType(.decimalPad)
+//                TextField("Amount", value: $amount, format: .currency(code: "USD"))
+//                    .keyboardType(.decimalPad)
             }
             .navigationTitle("Add new expense")
             .toolbar {

@@ -8,20 +8,21 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject var expenses = Expenses()
     @State private var showingAddExpense = false
+    @StateObject var expenses = Expenses()
+ //   @StateObject var removeItemsVM = ContentViewVM()
     
     var body: some View {
         NavigationView {
             List {
-                ForEach(expenses.items, id: \.id) { item in
+                ForEach(expenses.items) { item in
                     HStack {
                         VStack(alignment: .leading) {
                             Text(item.name)
                                 .font(.headline)
                             Text(item.type)
                         }
-                        
+
                         Spacer()
                         Text(item.amount, format: .currency(code: "USD"))
                     }
@@ -36,7 +37,7 @@ struct ContentView: View {
                     Image(systemName: "plus")
                 }
                 .sheet(isPresented: $showingAddExpense) {
-                    AddView(expenses: expenses)
+                    AddView(expenses: expenses) //costumava ter argumento expenses: removeItemsVM.expenses
                 }
             }
         }
